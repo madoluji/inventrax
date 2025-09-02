@@ -1,11 +1,14 @@
+@include('partials.sidetopbar')
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IMS Dashboard</title>
-    <!-- Icons -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         /* General Reset */
@@ -22,82 +25,25 @@
             background: #f5f6fa;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 220px;
-            background: #002540;
-            /* Match wireframe */
-            color: #fff;
-            padding: 20px;
-        }
 
-        .sidebar .logo {
-            font-size: 22px;
-            margin-bottom: 30px;
-            font-weight: bold;
-        }
 
-        .sidebar .logo span {
-            color: #00aaff;
-            /* Light blue like wireframe */
-        }
-
-        .sidebar nav a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #fff;
-            padding: 10px 0;
-            text-decoration: none;
-            transition: 0.2s;
-            font-size: 15px;
-        }
-
-        .sidebar nav a i {
-            width: 18px;
-        }
-
-        .sidebar nav a:hover {
-            color: #00aaff;
-        }
-
-        /* Main */
+        /* Main content */
         .main {
             flex: 1;
             padding: 20px;
-        }
-
-        /* Topbar */
-        .topbar {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            flex-direction: column;
         }
 
-        .search {
-            padding: 8px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-        }
 
-        .user {
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
 
-        /* Cards */
+        /* Stats cards */
         .cards {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            /* <-- CHANGED: dynamic columns */
             gap: 15px;
             margin-bottom: 30px;
-
-            top: 15%;
-
         }
 
         .card {
@@ -109,26 +55,11 @@
             font-size: 16px;
         }
 
-        /* Charts */
-        .charts {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .chart-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-            height: 350px;
-            width: 40rem;
-        }
-
-        /* --- Nav Cards (wireframe style) --- */
+        /* Nav Cards */
         .nav-cards {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+            /* <-- CHANGED: dynamic columns */
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -169,32 +100,70 @@
         .nav-card.yellow {
             border-left-color: #f1c40f;
         }
+
+        /* Charts */
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            /* <-- CHANGED: responsive */
+            gap: 20px;
+        }
+
+        .chart-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            /* <-- CHANGED */
+            height: 350px;
+        }
+
+        /* RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 1024px) {
+            .charts {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                text-align: center;
+            }
+
+            .sidebar nav a {
+                justify-content: center;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cards,
+            .nav-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .search {
+                width: 100%;
+                /* fills space on mobile */
+                margin-right: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h2 class="logo">inven<span>traX</span></h2>
-        <nav>
-            <a href="#"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
-            <a href="#"><i class="fa-solid fa-user"></i> Customer</a>
-            <a href="#"><i class="fa-solid fa-table-cells-large"></i> Category</a>
-            <a href="#"><i class="fa-solid fa-truck"></i> Supplier</a>
-            <a href="#"><i class="fa-solid fa-box"></i> Product</a>
-            <a href="#"><i class="fa-solid fa-credit-card"></i> Purchase</a>
-            <a href="#"><i class="fa-solid fa-receipt"></i> Order</a>
-        </nav>
-    </aside>
 
     <!-- Main Content -->
     <main class="main">
-        <header class="topbar">
-            <input type="text" placeholder="Search..." class="search">
-            <span class="user"><i class="fa-solid fa-user"></i> Hello, User</span>
-        </header>
-
-        <!-- Navigation Cards (from wireframe) -->
+        <!-- Topbar -->
 
 
         <!-- Stats Cards -->
@@ -205,7 +174,7 @@
             <div class="card">Orders: <b>56</b></div>
         </section>
 
-        <!--Search Bar-->
+        <!-- Navigation Cards -->
         <section class="nav-cards" id="navCards">
             <a href="#" class="nav-card red" data-name="customer"><span>Customer</span><i
                     class="fa-solid fa-user"></i></a>
@@ -231,6 +200,7 @@
             </div>
         </section>
     </main>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Stock by Category (Bar Chart)
@@ -258,23 +228,7 @@
                 }
             }
         });
-
         // Search Functionality
-        const searchInput = document.querySelector('.search');
-        const navCards = document.querySelectorAll('.nav-card');
-
-        searchInput.addEventListener('keyup', function() {
-            const query = this.value.toLowerCase();
-
-            navCards.forEach(card => {
-                const name = card.dataset.name.toLowerCase();
-                if (name.includes(query)) {
-                    card.style.display = 'flex'; // show
-                } else {
-                    card.style.display = 'none'; // hide
-                }
-            });
-        });
 
         // Purchases vs Sales (Line Chart)
         var ctx2 = document.getElementById('salesChart').getContext('2d');
@@ -286,14 +240,14 @@
                         label: 'Purchases',
                         data: [50, 70, 60, 90, 80, 100],
                         borderColor: '#28a745',
-                        fill: false,
+                        fill: true,
                         tension: 0.3
                     },
                     {
                         label: 'Sales',
                         data: [40, 60, 55, 85, 75, 95],
                         borderColor: '#007bff',
-                        fill: false,
+                        fill: true,
                         tension: 0.3
                     }
                 ]
